@@ -23,18 +23,21 @@ utils.set_random_seed(13)
 
 def train_cars(epochs=30, lr=0.001):
     model = Sequential()
-    model.add(Conv2D(256, (3, 3), padding='same', activation='relu', input_shape=(img_height, img_width, 3)))
+    model.add(Conv2D(64, (3, 3), padding='same', activation='relu', input_shape=(img_height, img_width, 3)))
+    model.add(Conv2D(64, (3, 3), padding='same', activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Conv2D(128, (3, 3), padding='same', activation='relu'))
+    model.add(Conv2D(128, (3, 3), padding='same', activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Conv2D(256, (3, 3), padding='same', activation='relu'))
-    model.add(MaxPooling2D(pool_size=(3, 3)))
     model.add(Conv2D(256, (3, 3), padding='same', activation='relu'))
-    model.add(Dropout(0.2))
-    model.add(Conv2D(256, (3, 3), padding='same', activation='relu'))
-    model.add(MaxPooling2D(pool_size=(3, 3)))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.2))
 
     model.add(Conv2D(512, (3, 3), padding='same', activation='relu'))
-    model.add(Conv2D(1024, (3, 3), padding='same', activation='relu'))
-    model.add(MaxPooling2D(pool_size=(3, 3)))
+    model.add(Conv2D(512, (3, 3), padding='same', activation='relu'))
+    #model.add(Conv2D(1024, (3, 3), padding='same', activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.2))
 
     model.add(Flatten())
@@ -71,7 +74,7 @@ def plot_loss_acc(history, title_loss='Loss', title_acc='Accuracy'):
 # Вариант 3.
 #######################################################################################################################
 train_path = './middle_fmr'
-batch_size = 16
+batch_size = 32
 img_width = 96
 img_height = 54
 
@@ -103,6 +106,7 @@ validation_generator = datagen.flow_from_directory(
 )
 
 model_cars, history_cars = train_cars(lr=0.0001, epochs=50)
+model_cars.summary()
 plot_loss_acc(history_cars, title_loss='Loss (Default Model)', title_acc='Accuracy (Default Model)')
 
 
