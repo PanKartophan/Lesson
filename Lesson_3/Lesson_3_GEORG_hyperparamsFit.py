@@ -93,8 +93,8 @@ def train_georg(dropout=0.4, n_dense_neurons=512, lr=0.001, batch_size=32, epoch
     return model, history
 
 
-hyper_params = {'dropout': [0., 0.5, 0.5], 'n_dense_neurons': [512, 128, 32],
-                'lr': [1.e-4, 1.e-3, 1.e-2], 'batch_size': [128, 64, 32], 'val_accuracy': []}
+hyper_params = {'dropout': [0., 0.25, 0.5], 'n_dense_neurons': [32, 128, 512],
+                'lr': [1.e-4, 1.e-3, 1.e-2], 'batch_size': [32, 64, 128], 'val_accuracy': []}
 df = pd.DataFrame(columns=[*hyper_params])
 
 n_row = 0
@@ -111,11 +111,3 @@ for dropout in hyper_params['dropout']:
                 n_row += 1
 
 df.to_csv('./GEORG_hyperparamsFit.csv', index=False)
-
-
-
-
-
-
-
-

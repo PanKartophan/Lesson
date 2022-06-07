@@ -4,9 +4,9 @@ import pandas as pd
 pd.pandas.set_option('display.max_columns', None)
 pd.set_option('expand_frame_repr', False)
 pd.options.display.expand_frame_repr = False
-pd.set_option('precision', 2)
+#pd.set_option('precision', 3)
 
-final_df = pd.read_excel('./Lesson_3/GEORG_hyperparamsFit.xlsx') # загружаем результаты  анализа
+final_df = pd.read_csv('./Lesson_3/GEORG_hyperparamsFit.csv', header=0) # загружаем результаты  анализа
 # final_df = pd.read_excel('source_root/30min_backtest_final.xlsx') # загружаем результаты  анализа
 print(final_df)
 
