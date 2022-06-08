@@ -10,3 +10,9 @@
 /Lesson_6/xTrainProf01.npy
 /Lesson_6/xTrainRez01.npy
 /Lesson_6/yTrain.npy
+/Lesson_6/xTrainC01_moscow.npy
+/Lesson_6/xTrainScaled_moscow.npy
+/Lesson_6/yTrain_moscow.npy
+/Lesson_6/yTrainScaled_moscow.npy
+/Lesson_6/test.py
+/Lesson_6/weights_moscow.hdf5
