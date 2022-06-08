@@ -720,7 +720,7 @@ def train(n_neurons_1=1024, n_neurons_2=128, lr=1.e-3, epochs=10, batch_size=128
     return history
 
 
-history = train(n_neurons_1=512, n_neurons_2=256, lr=1.e-3, batch_size=512, epochs=2)
+history = train(n_neurons_1=512, n_neurons_2=256, lr=1.e-3, batch_size=512, epochs=200)
 plot_loss_mae(history, title_mae='MAE')
 
 # # Точность MAE = 0.0800 * 1E7.
