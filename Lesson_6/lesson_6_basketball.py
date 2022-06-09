@@ -79,3 +79,5 @@ def train(lr=1.e-3, epochs=10, batch_size=128):
 
 history = train(lr=7.e-4, batch_size=256, epochs=500)
 plot_metric(history, metric='maeUnscaledMinMax_metric_fn', title_mae='MAE')
+
+#MAE = 10.2.
