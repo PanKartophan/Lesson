@@ -16,7 +16,7 @@ np.random.seed(13)
 set_seed(13)
 
 
-# LIGHT (Вариант 1).
+# LIGHT (Вариант 1 и 2).
 #######################################################################################################################
 def plot_metric(history, metric='maeUnscaled_metric_fn', title='MAE'):
     plt.plot(history.history[metric])
@@ -39,7 +39,7 @@ def create_model_dense(step_forward=1):
 
 def create_model_conv():
     model = Sequential()
-    model.add(Conv1D(200, 5, input_shape(x_len, x_train.shape[-1]), activation='linear'))
+    model.add(Conv1D(200, 5, input_shape=(x_len, x_train.shape[-1]), activation='linear'))
     model.add(GlobalMaxPooling1D())
     model.add(Dense(100, activation='linear'))
     model.add(Dense(1, activation='linear'))
@@ -59,10 +59,11 @@ def get_pred(model, x_val, y_val, y_scaler):
 # step - длина графика, которую отрисовываем
 # channel - какой канал отрисовываем
 def show_predict(start, step, channel, pred_val, y_val_unscaled):
-    plt.plot(pred_val[start:start+step, 0], label='Прогноз')
+    plt.plot(pred_val[start:start+step, channel], label='Прогноз')
     plt.plot(y_val_unscaled[start:start+step, channel], label='Базовый ряд')
     plt.xlabel('Время')
     plt.ylabel('Значение Close')
+    plt.title('На' + str(channel + 1) + 'шаг вперёд')
     plt.legend()
     plt.show()
 
@@ -91,7 +92,7 @@ def show_corr(channels, corr_steps, pred_val, y_val_unscaled):
         y_len = y_val_unscaled.shape[0]
         # Постепенно увеличикаем шаг, насколько смещаем сигнал для проверки автокорреляции
         for i in range(corr_steps):
-            corr.append(correlate(y_val_unscaled[:y_len-i, ch], pred_val[i:, 0]))
+            corr.append(correlate(y_val_unscaled[:y_len-i, ch], pred_val[i:, ch]))
         own_corr = []  # Создаём пустой лист, в нём будут корреляции при смезении на i рагов обратно
         # Постепенно увеличикаем шаг, насколько смещаем сигнал для проверки автокорреляции
         for i in range(corr_steps):
@@ -113,6 +114,7 @@ x_len = 300
 val_len = 30000
 train_len = data.shape[0] - val_len
 
+# Обучаем полносвязную сеть для прогнозирования на 1 шаг вперёд и визуализируем результаты.
 # x_train, x_val = data[:train_len], data[train_len+x_len+2:]
 # x_scaler = MinMaxScaler()
 # x_scaler.fit(x_train)
@@ -128,8 +130,7 @@ train_len = data.shape[0] - val_len
 # train_datagen = TimeseriesGenerator(x_train, y_train, length=x_len, stride=1, batch_size=20)
 # val_datagen = TimeseriesGenerator(x_val, y_val, length=x_len, stride=1, batch_size=20)
 # val_datagen_full = TimeseriesGenerator(x_val, y_val, length=x_len, stride=1, batch_size=len(x_val))
-
-# Обучаем полносвязную сеть для прогнозирования на 1 шаг вперёд и визуализируем результаты.
+#
 # model_dense = create_model_dense(step_forward=1)
 # history_dense = model_dense.fit_generator(train_datagen, epochs=20, verbose=1, validation_data=val_datagen)
 # plot_metric(history_dense, metric='loss', title='MSE')
@@ -162,5 +163,6 @@ plot_metric(history_dense, metric='loss', title='MSE')
 pred_val, y_val_unscaled = get_pred(model_dense_forward, val_datagen_full[0][0], val_datagen_full[0][1], y_scaler)
 for ch in range(y_val_unscaled.shape[-1]):
     show_predict(0, 1000, ch, pred_val, y_val_unscaled)
+plt.figure(figsize=(10, 10))
 show_corr(list(range(10)), 100, pred_val, y_val_unscaled)
 
